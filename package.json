@@ -1,7 +1,11 @@
 {
-  "name": "react-gantt-timeline",
-  "version": "0.4.0",
+  "name": "@parapet3/j-react-gantt-timeline",
+  "version": "0.4.2",
   "description": "",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/parapet3/j-react-timeline-gantt.git"
+  },
   "main": "dist/index.js",
   "scripts": {
     "start": "webpack-dev-server --mode development --open --config webpack.config.demo.js ",
@@ -9,9 +13,10 @@
     "prodser": "webpack-dev-server  --mode production --open --config webpack.config.prod.js ",
     "build": "webpack --mode production  --config webpack.config.build.js",
     "lint": "eslint src",
-    "test": "jest && codecov",
-    "prepublish": "rm -rf ./dist && npm run build",
-    "postinstall": "opencollective-postinstall"
+    "prepublish": "rd /s /q dist && npm run build"
+  },
+  "publishConfig": {
+    "registry": "https://npm.pkg.github.com/"
   },
   "peerDependencies": {
     "css-layout": "^1.1.1",

@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import TimeLine from "libs/TimeLine";
-import Generator from "./Generator";
+//import Generator from "./Generator";
+import Demo_Data from "./Demo_Data.js";
 import "./App.css";
 
 const config = {
@@ -75,15 +76,15 @@ const config = {
 
 class App extends Component {
   constructor(props) {
+    let links = [];
     super(props);
-    let result = Generator.generateData();
-    this.data = result.data;
+    this.data = Demo_Data.demodata;
     this.state = {
       itemheight: 20,
       data: [],
       selectedItem: null,
-      timelineMode: "month",
-      links: result.links,
+      timelineMode: "year",
+      links: links,
       nonEditableName: false
     };
   }
@@ -127,9 +128,7 @@ class App extends Component {
   };
 
   getbuttonStyle(value) {
-    return this.state.timelineMode == value
-      ? { backgroundColor: "grey", boder: "solid 1px #223344" }
-      : {};
+    return this.state.timelineMode == value ? { backgroundColor: "grey", boder: "solid 1px #223344" } : {};
   }
 
   modeChange = value => {
@@ -140,20 +139,7 @@ class App extends Component {
     function S4() {
       return (((1 + Math.random()) * 0x10000) | 0).toString(16).substring(1);
     }
-    return (
-      S4() +
-      S4() +
-      "-" +
-      S4() +
-      "-4" +
-      S4().substr(0, 3) +
-      "-" +
-      S4() +
-      "-" +
-      S4() +
-      S4() +
-      S4()
-    ).toLowerCase();
+    return (S4() + S4() + "-" + S4() + "-4" + S4().substr(0, 3) + "-" + S4() + "-" + S4() + S4() + S4()).toLowerCase();
   }
 
   getRandomDate() {

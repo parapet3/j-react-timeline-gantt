@@ -7,18 +7,8 @@ import LinkViewPort from "libs/components/links/LinkViewPort";
 import TaskList from "libs/components/taskList/TaskList";
 import Registry from "libs/helpers/registry/Registry";
 import { BUFFER_DAYS, DATA_CONTAINER_WIDTH } from "libs/Const";
-import {
-  VIEW_MODE_DAY,
-  VIEW_MODE_WEEK,
-  VIEW_MODE_MONTH,
-  VIEW_MODE_YEAR
-} from "libs/Const";
-import {
-  DAY_MONTH_MODE,
-  DAY_WEEK_MODE,
-  DAY_DAY_MODE,
-  DAY_YEAR_MODE
-} from "libs/Const";
+import { VIEW_MODE_DAY, VIEW_MODE_WEEK, VIEW_MODE_MONTH, VIEW_MODE_YEAR } from "libs/Const";
+import { DAY_MONTH_MODE, DAY_WEEK_MODE, DAY_DAY_MODE, DAY_YEAR_MODE } from "libs/Const";
 import DataController from "libs/controller/DataController";
 import Config from "libs/helpers/config/Config";
 import DateHelper from "libs/helpers/DateHelper";
@@ -45,7 +35,7 @@ class TimeLine extends Component {
       nowposition: 0,
       startRow: 0, //
       endRow: 10,
-      sideStyle: { width: 200 },
+      sideStyle: { width: 300 },
       scrollLeft: 0,
       scrollTop: 0,
       numVisibleRows: 40,
@@ -98,11 +88,7 @@ class TimeLine extends Component {
     this.setStartEnd();
     let newNumVisibleRows = Math.ceil(size.height / this.props.itemheight);
     let newNumVisibleDays = this.calcNumVisibleDays(size);
-    let rowInfo = this.calculateStartEndRows(
-      newNumVisibleRows,
-      this.props.data,
-      this.state.scrollTop
-    );
+    let rowInfo = this.calculateStartEndRows(newNumVisibleRows, this.props.data, this.state.scrollTop);
     this.setState({
       numVisibleRows: newNumVisibleRows,
       numVisibleDays: newNumVisibleDays,
@@ -119,11 +105,7 @@ class TimeLine extends Component {
   verticalChange = scrollTop => {
     if (scrollTop == this.state.scrollTop) return;
     //Check if we have scrolling rows
-    let rowInfo = this.calculateStartEndRows(
-      this.state.numVisibleRows,
-      this.props.data,
-      scrollTop
-    );
+    let rowInfo = this.calculateStartEndRows(this.state.numVisibleRows, this.props.data, scrollTop);
     if (rowInfo.start !== this.state.start) {
       this.setState(
         (this.state = {
@@ -137,10 +119,7 @@ class TimeLine extends Component {
 
   calculateStartEndRows = (numVisibleRows, data, scrollTop) => {
     let new_start = Math.trunc(scrollTop / this.props.itemheight);
-    let new_end =
-      new_start + numVisibleRows >= data.length
-        ? data.length
-        : new_start + numVisibleRows;
+    let new_end = new_start + numVisibleRows >= data.length ? data.length : new_start + numVisibleRows;
     return { start: new_start, end: new_end };
   };
 
@@ -176,9 +155,7 @@ class TimeLine extends Component {
     }
 
     //Get the day of the left position
-    let currentIndx = Math.trunc(
-      (newScrollLeft - this.state.nowposition) / this.state.dayWidth
-    );
+    let currentIndx = Math.trunc((newScrollLeft - this.state.nowposition) / this.state.dayWidth);
 
     //Calculate rows to render
     new_startRow = Math.trunc(this.state.scrollTop / this.props.itemheight);
@@ -203,13 +180,11 @@ class TimeLine extends Component {
 
   calculateVerticalScrollVariables = size => {
     //The pixel to scroll verically is equal to the pecentage of what the viewport represent in the context multiply by the context width
-    this.pxToScroll =
-      (1 - size.width / DATA_CONTAINER_WIDTH) * DATA_CONTAINER_WIDTH - 1;
+    this.pxToScroll = (1 - size.width / DATA_CONTAINER_WIDTH) * DATA_CONTAINER_WIDTH - 1;
   };
 
   onHorizonChange = (lowerLimit, upLimit) => {
-    if (this.props.onHorizonChange)
-      this.props.onHorizonChange(lowerLimit, upLimit);
+    if (this.props.onHorizonChange) this.props.onHorizonChange(lowerLimit, upLimit);
   };
 
   /////////////////////
@@ -280,8 +255,7 @@ class TimeLine extends Component {
   /////////////////////
 
   onSelectItem = item => {
-    if (this.props.onSelectItem && item != this.props.selectedItem)
-      this.props.onSelectItem(item);
+    if (this.props.onSelectItem && item != this.props.selectedItem) this.props.onSelectItem(item);
   };
 
   onStartCreateLink = (task, position) => {
@@ -324,14 +298,10 @@ class TimeLine extends Component {
       //to recalculate the now position we have to see how mwny scroll has happen
       //to do so we calculate the diff of days between current day and now
       //And we calculate how many times we have scroll
-      let scrollTime = Math.ceil(
-        (-this.state.currentday * this.state.dayWidth) / this.pxToScroll
-      );
+      let scrollTime = Math.ceil((-this.state.currentday * this.state.dayWidth) / this.pxToScroll);
       //We readjust now postion to the new number of scrolls
       this.state.nowposition = scrollTime * this.pxToScroll;
-      let scrollLeft =
-        (this.state.currentday * this.state.dayWidth + this.state.nowposition) %
-        this.pxToScroll;
+      let scrollLeft = (this.state.currentday * this.state.dayWidth + this.state.nowposition) % this.pxToScroll;
       // we recalculate the new scroll Left value
       this.state.scrollLeft = scrollLeft;
     }
@@ -339,11 +309,7 @@ class TimeLine extends Component {
   checkNeeeData = () => {
     if (this.props.data != this.state.data) {
       this.state.data = this.props.data;
-      let rowInfo = this.calculateStartEndRows(
-        this.state.numVisibleRows,
-        this.props.data,
-        this.state.scrollTop
-      );
+      let rowInfo = this.calculateStartEndRows(this.state.numVisibleRows, this.props.data, this.state.scrollTop);
       this.state.startRow = rowInfo.start;
       this.state.endRow = rowInfo.end;
       Registry.registerData(this.state.data);
